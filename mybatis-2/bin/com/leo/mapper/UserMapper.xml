@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.leo.dao.IUserMapper"> 
+
+	<resultMap type="User" id="userResultMap">
+		<id property="id" column="user_id"/>
+		<result property="name" column="user_name"/>
+		<result property="birthday" column="user_birthday"/>
+		<result property="salary" column="user_salary"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="User">
+		INSERT s_user(user_name,user_birthday,user_salary) 
+		VALUES(#{name},#{birthday},#{salary})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM s_user WHERE user_id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="User">
+		UPDATE s_user SET user_name=#{name},user_birthday=#{birthday},user_salary=#{salary} 
+		WHERE user_id=#{id}
+	</update>
+	
+	<select id="findById" parameterType="int" resultMap="userResultMap">
+		SELECT * FROM s_user WHERE user_id=#{id}
+	</select>
+	
+	<select id="findAll" resultMap="userResultMap">
+		SELECT * FROM s_user
+	</select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.leo.mybatis3.duserMapper"> 
+	<!-- 
+		动态SQL
+	 -->
+	<select id="getUser" parameterType="java.util.Map" resultType="User">
+		SELECT * FROM d_user 
+		WHERE 1=1
+		<if test="name!=null and name!=''">
+			AND `name` LIKE CONCAT('%',#{name},'%')
+		</if>
+		AND age BETWEEN  #{minAge} AND #{maxAge}
+	</select>
+	
+	<!-- 
+		调用存储过程
+	 -->
+	<select id="getProcedure" statementType="CALLABLE" parameterMap="getParamMap">
+		CALL ges_user_count(?, ?)
+	</select>
+	
+	<parameterMap type="java.util.Map" id="getParamMap">
+		<parameter property="sexId" mode="IN" jdbcType="INTEGER"/>
+		<parameter property="userCount" mode="OUT" jdbcType="INTEGER"/>
+	</parameterMap>
+	
+</mapper>

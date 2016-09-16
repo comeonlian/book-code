@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.leo.mybatis2.orderMapper"> 
+	<!-- 属性 到 表字段的映射 -->
+	<resultMap id="orderMap" type="Order" >
+		<id property="id" column="order_id"/>
+		<result property="orderNo" column="order_no"/>
+		<result property="price" column="order_price"/>
+	</resultMap>
+	
+	
+	<select id="getOrderById" parameterType="int" resultMap="orderMap">
+		<!-- SELECT order_id id,order_no orderNo,order_price price 
+		FROM orders 
+		WHERE order_id=#{id} -->
+		
+		SELECT * FROM orders WHERE order_id=#{id}
+	</select>
+	
+</mapper>
