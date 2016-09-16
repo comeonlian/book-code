@@ -1,0 +1,16 @@
+public static void main(String[] args) throws InterruptedException{
+		Test a = new Test("1","","1");
+		Test b = new Test("1","","2");
+		Test c = new Test("3","","3");
+		Test d = new Test("4","","4");
+		System.out.println("begin:"+(System.currentTimeMillis()/1000));
+		a.start();
+		b.start();
+		c.start();
+		d.start();
+
+	}
+		
+	public void run(){
+		testDo.doSome(key, value);
+	}
