@@ -8,5 +8,15 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/mysql-conn"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/spring-core"/>
 	<classpathentry kind="lib" path="lib/netty-all-4.0.40.Final.jar" sourcepath="F:/JAVA/jar/netty/netty-4.0.40.Final/jar/all-in-one/netty-all-4.0.40.Final-sources.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-annotations-3.4.0.GA.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-core-4.1.12.Final.jar"/>
+	<classpathentry kind="lib" path="lib/spring-aop-4.1.6.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-beans-4.1.6.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-context-4.1.6.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-core-4.1.6.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-expression-4.1.6.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-test-4.1.6.RELEASE.jar"/>
+	<classpathentry kind="lib" path="lib/spring-tx-4.1.6.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
