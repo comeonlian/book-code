@@ -1,4 +1,4 @@
-package com.leolian;
+package com.leolian.demo;
 
 /**
  * Hello world!

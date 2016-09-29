@@ -16,15 +16,16 @@ public class SpringTest {
 	
 	private static ApplicationContext context = null;
 	
-	@BeforeClass
+	/*@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		context = new ClassPathXmlApplicationContext("applicationContext.xml");
-	}
+	}*/
 
 	@Test
 	public void test() {
-		Date date = (Date) context.getBean("date");
-		System.out.println(date);
+		//Date date = (Date) context.getBean("date");
+		//System.out.println(date);
+		System.err.println("*****  test git  push *****");
 	}
 
 }

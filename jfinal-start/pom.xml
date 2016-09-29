@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>me.anmt.jfinal</groupId>
+	<artifactId>jfinal-start</artifactId>
+	<version>0.1</version>
+	<packaging>war</packaging> 
+	<name>jfinal的maven版本快速开始</name>
+	<description>jfinal的maven版本的纯净版框架，或者说快速开始吧！将本项目克隆下来，然后就可以开始写逻辑了。</description>
+  	
+  	<dependencies>
+  		<!-- jfinal核心 -->
+  		<dependency>
+		    <groupId>com.jfinal</groupId>
+		    <artifactId>jfinal</artifactId>
+		    <version>2.2</version>
+		</dependency>
+		
+		<!-- jetty-server支持，
+			如果是 JFinal 官方手册推荐的启动方式，则必须需要，
+			如果是tomcat等建议删除 -->
+		<!-- <dependency>
+		    <groupId>com.jfinal</groupId>
+		    <artifactId>jetty-server</artifactId>
+		    <version>8.1.8</version>
+		</dependency> -->
+		
+		<!-- MySql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.32</version>
+		</dependency>
+		
+		<!-- 连接池  -->
+		<dependency>
+		    <groupId>c3p0</groupId>
+		    <artifactId>c3p0</artifactId>
+		    <version>0.9.1.2</version>
+		</dependency>
+		
+		<!-- freemarker -->
+		<dependency>
+		    <groupId>org.freemarker</groupId>
+		    <artifactId>freemarker</artifactId>
+		    <version>2.3.20</version>
+		</dependency>
+		
+		<!-- 日志 -->
+		<dependency>
+		    <groupId>log4j</groupId>
+		    <artifactId>log4j</artifactId>
+		    <version>1.2.17</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- 资源文件拷贝插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- java编译插件 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<!-- maven的tomcat插件，不会被打包进去滴 -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+			    <artifactId>tomcat7-maven-plugin</artifactId>
+			    <version>2.2</version>
+				<configuration>
+					<port>8080</port>
+					<path>/</path>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
