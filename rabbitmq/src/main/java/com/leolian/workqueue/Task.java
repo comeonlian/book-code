@@ -24,7 +24,7 @@ public class Task {
 		Channel channel = connection.createChannel();
 		boolean durable = false; // 设置消息持久化
 								// RabbitMQ不允许使用不同的参数重新定义一个队列，所以已经存在的队列，我们无法修改其属性。
-		// 声明队列
+		// 声明队列，设置队列持久化
 		channel.queueDeclare(QUEUE_NAME, durable, false, false, null);
 
 		// 发送10条消息，依次在消息后面附加1-10个点
