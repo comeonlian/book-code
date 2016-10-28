@@ -1,0 +1,14 @@
+package com.t35.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping(value="/record")
+public class RecordController {
+
+	@RequestMapping(value="/toRecord")
+	public String toRecord(){
+		return"record";
+	}
+}

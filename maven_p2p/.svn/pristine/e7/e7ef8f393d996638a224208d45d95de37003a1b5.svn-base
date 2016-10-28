@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.t35.dao.InvestreportMapper">
+	
+	<select id="queryAllBorrow" resultType="Borrow" parameterType="com.t35.pojo.query.BasePage">
+		select * from borrow limit #{pageIndex},#{pageSize}
+	</select>
+	
+
+	<select id="queryPage" resultType="Borrow" >
+		select * from borrow
+	</select>
+	
+	<select id="query" resultType="Borrow" parameterType="com.t35.pojo.query.Condition">
+		select * from borrow b <where>
+		<if test="'30' eq time">
+		<![CDATA[ 
+			datediff(b.finishDate,b.createDate)>=0 && datediff(b.finishDate,b.createDate)<=30
+		]]>
+		</if>
+		<if test="'90' eq time">
+		<![CDATA[ 
+			datediff(b.finishDate,b.createDate)>30 && datediff(b.finishDate,b.createDate)<=90
+		]]>
+		</if>
+		<if test="'150'eq time">
+		<![CDATA[ 
+			datediff(b.finishDate,b.createDate)>90 && datediff(b.finishDate,b.createDate)<=150
+		]]>
+		</if>
+		<if test="'220'eq time">
+		<![CDATA[ 
+			datediff(b.finishDate,b.createDate)>150
+		]]>
+		</if>
+		<if test="borrowType == 1">
+		<![CDATA[ 
+			borrowType=#{borrowType}
+		]]>
+		</if>
+		<if test="borrowType == 2">
+		<![CDATA[ 
+			borrowType=#{borrowType}
+		]]>
+		</if>
+		<if test="borrowType == 3">
+		<![CDATA[ 
+			borrowType=#{borrowType}
+		]]>
+		</if>
+		<if test="borrowType == 4">
+		<![CDATA[ 
+			borrowType=#{borrowType}
+		]]>
+		</if>
+		<if test="1 == interestRate">
+		<![CDATA[ 
+			b.`interestRate`>=0 && b.`interestRate`<=10
+		]]>
+		</if>
+		<if test="2 == interestRate">
+		<![CDATA[ 
+			b.`interestRate`>10 && b.`interestRate`<=15
+		]]>
+		</if>
+		<if test="3 == interestRate">
+		<![CDATA[ 
+			b.`interestRate`>15 && b.`interestRate`<=20
+		]]>
+		</if>
+		<if test="4 == interestRate">
+		<![CDATA[ 
+			b.`interestRate`>20 && b.`interestRate`<=30
+		]]>
+		</if>
+		</where>
+	</select>
+	
+	<select id="queryById" resultType="Borrow" parameterType="Borrow">
+		select * from borrow b where b.id=#{id}
+	</select>
+	
+	<select id="getAllUserInFo" resultMap="userMap" parameterType="Borrow">
+		SELECT b.*,u.*,w.* ,user.* ,a.*
+FROM `user` u
+JOIN borrow b ON u.id=b.`userId`
+JOIN `work` w ON u.id=w.`userId` 
+JOIN usercredit `user` ON u.id=user.`userId` 
+JOIN assets a ON u.id=a.`userId`
+WHERE b.`id`=#{id}
+	</select>
+	
+	<resultMap type="User" id="userMap">
+		<result property="id" column="id"/>
+		<result property="idCardName" column="idCardName"/>
+		<result property="userName" column="userName"/>
+		<result property="passWord" column="passWord"/>
+		<result property="idCardNum" column="idCardNum"/>
+		<result property="credits" column="credits"/>
+		<result property="creditsMoney" column="creditsMoney"/>
+		<association property="borrow" javaType="Borrow" resultMap="borrowMap"></association> 
+		<association property="assets" javaType="Assets" resultMap="assetsMap"></association>
+		<association property="work" javaType="Work" resultMap="workMap"></association>
+		<association property="usercredit" javaType="Usercredit" resultMap="usercreditMap"></association>
+	</resultMap>
+	
+	<!-- borrowMap -->
+	<resultMap type="Borrow" id="borrowMap">
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+		<result property="interestRate" column="interestRate"/>
+		<result property="finishDate" column="finishDate"/>
+		<result property="createDate" column="createDate"/>
+		<result property="tagetMoney" column="tagetMoney"/>
+		<result property="borrowMoney" column="borrowMoney"/>
+		<result property="reimbursement" column="reimbursement"/>
+	</resultMap>
+	
+	<!-- assetsMap -->
+	<resultMap type="Assets" id="assetsMap">
+		<result property="id" column="id"/>
+		<result property="houseProperty" column="houseProperty"/>
+		<result property="mortgage" column="mortgage"/>
+		<result property="car" column="car"/>
+	</resultMap>
+	
+	<!-- wrokMap -->
+	<resultMap type="Work" id="workMap">
+		<result property="id" column="id"/>
+		<result property="company" column="company"/>
+		<result property="companySize" column="companySize"/>
+		<result property="companyPost" column="companyPost"/>
+		<result property="city" column="city"/>
+	</resultMap>
+	
+	<!-- usercreditMap -->
+	<resultMap type="Usercredit" id="usercreditMap">
+		<result property="id" column="id"/>
+		<result property="creditLine" column="creditLine"/>
+		<result property="borrowTime" column="borrowTime"/>
+		<result property="borrowSuccessTime" column="borrowSuccessTime"/>
+		<result property="borrowFinishTime" column="borrowFinishTime"/>
+		<result property="creditMoney" column="creditMoney"/>
+		<result property="useCreditMoney" column="useCreditMoney"/>
+		<result property="payBack" column="payBack"/>
+		<result property="overTime" column="overTime"/>
+	</resultMap>
+	
+	<select id="getInvestreport" resultType="Investreport" parameterType="Borrow">
+		select * from investreport i where i.borrowId=#{id}
+	</select>
+	
+	<select id="getUser" resultType="User" parameterType="User">
+		SELECT * FROM `user` u WHERE u.`userName` = #{userName}
+	</select>
+	
+	<insert id="saveInvestreport" parameterType="Investreport">
+		INSERT INTO investreport (userId,money,borrowId,createTime) VALUES(#{userId},#{money},#{borrowId},#{createTime})
+	</insert>
+</mapper>  

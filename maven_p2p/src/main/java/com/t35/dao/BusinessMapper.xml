@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace的名字需要跟接口的类名一致 -->
+<mapper namespace="com.t35.dao.BusinessMapper">
+
+	<select id="getBusinessList" parameterType="integer" resultType="Business">
+		select * from business b
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="userId != null">
+				 b.userId = #{userId} 
+			</if>
+		</trim>
+	</select>
+	
+	<select id="queryAllBusiness" resultType="Business" parameterType="BusinessQuery" >
+		select * from business limit #{pageIndex},#{pageSize} 
+	</select>
+	
+	<select id="getBusinessCountBy" resultType="java.lang.Integer" >
+		select count(1) from business
+	</select>
+	
+	<select id="findAllExcle" resultType="Business" >
+		select * from business
+	</select>
+	
+	<delete id="deleteBusinessByUserId" parameterType="java.lang.Integer" >
+		delete from business where userId=#{userId}
+	</delete>
+	
+</mapper>
