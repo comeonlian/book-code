@@ -1,4 +1,4 @@
-package com.leolian.optimize.ack;
+package com.leolian.platform.bm;
 
 import com.leolian.optimize.RabbitmqConstant;
 import com.rabbitmq.client.AMQP;
@@ -13,7 +13,7 @@ import com.rabbitmq.client.QueueingConsumer;
  * @author Administrator
  *
  */
-public class Consumer1 {
+public class BmConsumer1 {
 	
 	public static void main(String[] args) throws Exception{
 		//创建连接工厂
@@ -31,14 +31,15 @@ public class Consumer1 {
 		//声明交换器，持久化转发器
 		channel.exchangeDeclare(RabbitmqConstant.EXCHANGE_NAME, RabbitmqConstant.EXCHANGE_TYPE, RabbitmqConstant.DURATION);
 		//声明队列，持久化队列
-		channel.queueDeclare(RabbitmqConstant.COMMON_QUEUE,RabbitmqConstant.DURATION, false, false, null);
+		String queueName = RabbitmqConstant.BM_QUEUE; //消费的队列
+		channel.queueDeclare(queueName, RabbitmqConstant.DURATION, false, false, null);
 		//队列绑定交换器
-		channel.queueBind(RabbitmqConstant.COMMON_QUEUE, RabbitmqConstant.EXCHANGE_NAME, RabbitmqConstant.COMMON_KEY);
+		channel.queueBind(queueName, RabbitmqConstant.EXCHANGE_NAME, RabbitmqConstant.BM_KEY);
 		//消费消息
-		System.out.println("--- Consumer1 Waiting for messages about klone.");
+		System.out.println("--- BM Consumer1 Waiting for messages about klone.");
 		//声明消费者，并绑定到通道
 		QueueingConsumer consumer = new QueueingConsumer(channel);
-		channel.basicConsume(RabbitmqConstant.COMMON_QUEUE, false, consumer);
+		channel.basicConsume(queueName, false, consumer);
 		//消费者持续接收
 		String message = "";
 		String routingKey = "";
@@ -49,7 +50,7 @@ public class Consumer1 {
 			message = new String(delivery.getBody());
 			routingKey = delivery.getEnvelope().getRoutingKey();
 			//打印，也可以进行其他其他操作
-			System.out.println("--- Consume1 received: key = " + routingKey + ", msg = " + message + "");
+			System.out.println("--- BM Consume1 received: key = " + routingKey + ", msg = " + message + "");
 			
 			//Thread.sleep(10);
 			

@@ -2,7 +2,9 @@ package com.leolian.optimize;
 
 public interface RabbitmqConstant {
 	//IP
-	final String HOST = "192.168.1.33";
+	final String HOST1 = "192.168.1.33";
+	final String HOST2 = "192.168.1.34";
+	final String HOST3 = "192.168.1.35";
 	
 	//用户名密码
 	final String USERNAME = "admin";

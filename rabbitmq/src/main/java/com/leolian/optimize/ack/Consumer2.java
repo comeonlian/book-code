@@ -18,7 +18,7 @@ public class Consumer2 {
 	public static void main(String[] args) throws Exception{
 		//创建连接工厂
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(RabbitmqConstant.HOST);
+		factory.setHost(RabbitmqConstant.HOST1);
 		factory.setPort(AMQP.PROTOCOL.PORT);
 		factory.setUsername(RabbitmqConstant.USERNAME);
 		factory.setPassword(RabbitmqConstant.PASSWORD);

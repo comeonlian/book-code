@@ -122,7 +122,11 @@ public class BytesUtils {
 		//System.out.println(s);
 		
 		
-		System.out.println(Arrays.toString(byteToString("E100AB0304.0101 ".getBytes())));
+		//System.out.println(Arrays.toString(byteToString("E100AB0304.0101 ".getBytes())));
+		
+		String s1 = "S100D005V004", s2 = "2016-11-04";
+		
+		System.out.println(Arrays.toString(byteToString(s1.getBytes())) + " -- "+Arrays.toString(byteToString(s2.getBytes())));
 		
 	}
 }
