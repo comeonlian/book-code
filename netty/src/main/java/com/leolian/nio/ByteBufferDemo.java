@@ -17,12 +17,20 @@ public class ByteBufferDemo {
 		// 获取文件的通道
 		FileChannel fileChannel = rac.getChannel();
 		//创建缓冲区
-		ByteBuffer buffer = ByteBuffer.allocate(5);
+		ByteBuffer buffer = ByteBuffer.allocate(30);
 		//由通道往缓冲区里面写数据
 		int size = fileChannel.read(buffer);
 		while(size>0){
-			
+			//byte[] bytes = new byte[5];
+			buffer.flip();
+			//buffer.get(bytes);
+			System.out.println(new String(buffer.array()));
+			buffer.clear();
+			buffer.flip();
+			size = fileChannel.read(buffer);
 		}
+		fileChannel.close();
+		rac.close();
 	}
 	
 }
