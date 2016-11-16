@@ -26,7 +26,7 @@ public class SimulateUtil {
 				resultBytes = transferTo911(originBytes);
 			else if(originCode.startsWith("7e"))
 				resultBytes = transferToS100(originBytes);
-			resultStr = byteToString(resultBytes);
+			resultStr = byteToHexString(resultBytes);
 			return resultStr;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -171,7 +171,7 @@ public class SimulateUtil {
 	 * @param bytes
 	 * @return
 	 */
-	private static String byteToString(byte[] bytes) {
+	private static String byteToHexString(byte[] bytes) {
 		StringBuffer resStr = new StringBuffer();
 		int len = bytes.length;
 		for (int i = 0; i<len; i++) {
@@ -182,33 +182,41 @@ public class SimulateUtil {
 		}
 		return resStr.toString();
 	}
+	/**
+	 * 
+	 * 字节数组转16进制字符串数组
+	 * @param bytes
+	 * @return
+	 */
+	private static String[] byteToHexStringArray(byte[] bytes) {
+		int len = bytes.length;
+		String[] result = new String[len];
+		for(int i=0; i<len; i++){
+			result[i] = String.format("%02x", bytes[i]);
+		}
+		return result;
+	}
+	/* ****************************************** 分割线   ********************************************** */
 	
-	
-	public static void main(String[] args) {
-		/*String s = "7e 00 ff 00 01 53 11 11 11 11 11 11 00 00 93 7e";
+	public static void main(String[] args) throws Exception{
 		
-		System.out.println(entrance(s));*/
+		System.out.println(byteToHexString("N".getBytes()));
 		
-		/*byte[] srcBytes = new byte[]{126, 0, -1, 0, 1, 83, 17, 17, 17, 17, 17, 17, 0, 0, -109, 126};
-		byte[] tempBytes = new byte[srcBytes.length-2];
-		System.arraycopy(srcBytes, 1, tempBytes, 0, srcBytes.length-2);
-		System.out.println(Arrays.toString(tempBytes));*/
-		//System.out.println(hexString2Byte("ad"));
-		byte[] b = hexStr2Bytes("4e 31 30 30 41 42 30 30 30 30 2e 30 30 30 36 20");
-		System.out.println(new String(b));
+		System.out.println(deviceId2HexString("S534100000351"));
 	}
 	
-	
-	@Test
-	public void testDateUtil() throws Exception{
+	/* ****************************************** 分割线    ********************************************** */
+	/**
+	 * 返回日期时间十六进制字符串
+	 * @return
+	 * @throws Exception
+	 */
+	public static String dateHexString(String strdate) throws Exception{
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String strdate1 = "2016-10-20 20:00:00";
-		String strdate2 = "2016-11-20 19:00:00";
-		Date date1 = sdf.parse(strdate1);
-		Date date2 = sdf.parse(strdate2);
-		System.out.println(date1.toLocaleString());
-		System.out.println(date2.toLocaleString());
+		//String strdate1 = "2016-10-20 20:00:00";
+		Date date1 = sdf.parse(strdate);
+		//System.out.println(date1.toLocaleString());
 		calendar.setTime(date1);
 		// 数据采集时间
 		byte[] date_col = new byte[] { 
@@ -218,7 +226,42 @@ public class SimulateUtil {
 				(byte) calendar.get(Calendar.HOUR_OF_DAY),
 				(byte) calendar.get(Calendar.MINUTE), 
 				(byte) calendar.get(Calendar.SECOND) };
-		System.out.println(Arrays.toString(date_col));
+		//System.out.println(Arrays.toString(date_col));
+		return byteToHexString(date_col);
+	}
+	
+	/**
+	 * 版本转成十六进制字符串
+	 * @return
+	 */
+	public static String version2HexString(String version){
+		StringBuilder sb = new StringBuilder(version);
+		if(sb.length()!=16){
+			int len = 16 - sb.length();
+			while((len--)>0)
+				sb.append(" ");
+		}
+		byte[] bytes = sb.toString().getBytes();
+		return byteToHexString(bytes);
+	}
+	/**
+	 * 车机ID转成十六进制码
+	 * S100协议和911通用 	N201600008888	-->  4e 20 16 00 00 88 88
+	 * @param deviceId
+	 * @return
+	 */
+	public static String deviceId2HexString(String deviceId){
+		if(null==deviceId || deviceId.trim().length()==0)
+			return null;
+		StringBuilder result = new StringBuilder();
+		String firstStr = byteToHexString((deviceId.charAt(0) + "").getBytes());
+		result.append(firstStr + " ");
+		for(int i=1; i<deviceId.length(); i++){
+			result.append(deviceId.charAt(i)+"");
+			if((i%2)==0)
+				result.append(" ");
+		}
+		return result.toString().trim();
 	}
 	
 }

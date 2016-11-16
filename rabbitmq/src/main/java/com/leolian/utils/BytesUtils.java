@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class BytesUtils {
+	
+	
 	/**
 	 * 字节数组转16进制数组
 	 * @param bytes
@@ -62,9 +64,12 @@ public class BytesUtils {
 	 * @return
 	 */
 	public static byte hexString2Byte(String hexStr){
-		Byte val = Byte.parseByte(hexStr , 16);
-		return val;
+		int val = Integer.valueOf(hexStr , 16);
+		return (byte) val;
 	}
+	
+	
+	
 	
 	/**
 	 * 16进制字符数组转换为字节数组
@@ -94,7 +99,31 @@ public class BytesUtils {
 		return head_arr;
 	}
 	
+	/** 
+     * 注释：short到十六进制数组的转换！ 
+     * 
+     * @param s 
+     * @return 
+     */ 
+	public static String[] shortToByte(short number) { 
+    	int temp = number; 
+    	byte[] b = new byte[2]; 
+    	
+    	b[0] = (byte) ((number >> 8) & 0xff);
+    	b[1] = (byte) (number & 0xff);
+//    	
+//    	for (int i = 0; i < b.length; i++) { 
+//    		b[i] = new Integer(temp & 0xff).byteValue(); // 将最低位保存在最低位 
+//    		temp = temp >> 8; // 向右移8位 
+//    	} 
+    	return byteToString(b); 
+	} 
+	
+	
+	
+	
 	public static void main(String[] args) {
+		//System.out.println(Arrays.toString(shortToByte((short) -26293)));
 		/*byte[] bytes = new byte[]{35, 35, 1, 1, 83, 53, 51, 52, 49, 48, 48, 48, 48, 49, 50, 50, 56, 32,
 				32, 32, 32, 1, 0, 46, 16, 8, 5, 7, 44, 15, 0, 1, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49, 49,
 				49, 49, 49, 49, 49, 49, 49, 49, 49, 1, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48,
@@ -102,12 +131,13 @@ public class BytesUtils {
 		
 		System.out.println(Arrays.toString(byteToString(bytes)));*/
 		
-		//String[] data = {"23", "23", "01", "01", "4c", "4a", "31", "36", "36", "45", "34", "37", "37", "46", "32", "30", "31", "31", "35", "38", "33", "53", "35", "33", "34", "31", "30", "30", "30", "30", "30", "36", "34", "37", "01", "00", "2e", "10", "0a", "1a", "0f", "1f", "38", "00", "01", "38", "39", "38", "36", "30", "32", "62", "33", "32", "32", "31", "35", "38", "30", "31", "36", "38", "35", "33", "31", "01", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "31", "36"};
-		//byte[] result = hexString2Bytes(data);
+		String[] data = {"40" , "40" , "00" , "81" , "00" , "03" , "4e" , "20" , "16" , "08" , "17" , "15" , "02" , "00" , "24" , "10" , "01" , "10" , "1e" , "19" , "01" , "c0" , "aa" , "31" , "31" , "31" , "31" , "31" , "30" , "30" , "20" , "00" , "00" , "00" , "14" , "00" , "00" , "01" , "01" , "01" , "00" , "02" , "01" , "01" , "02" , "00" , "02" , "01" , "01" , "03" , "00" , "02" , "01" , "01" , "04" , "00" , "02" , "01" , "01" , "05" , "00" , "02" , "01" , "01" , "06" , "00" , "02" , "01" , "01" , "07" , "00" , "02" , "01" , "01" , "08" , "00" , "02" , "01" , "01" , "09" , "00" , "02" , "01" , "01" , "0A" , "00" , "02" , "01" , "01" , "0B" , "00" , "02" , "01" , "01" , "30" , "00" , "02" , "01" , "01" , "31" , "00" , "02" , "01" , "01" , "32" , "00" , "02" , "01" , "01" , "40" , "00" , "02" , "01" , "01" , "41" , "00" , "02" , "01" , "01" , "42" , "00" , "02" , "01" , "01" , "43" , "00" , "02" , "01" , "01" , "44" , "00" , "02" , "01" , "01"};
+		byte[] result = hexString2Bytes(data);
 		//System.out.println(Arrays.toString(data));
-		//System.out.println(Arrays.toString(result));
-		
-		//System.out.println(calCheckCode(result));
+		System.out.println(Arrays.toString(result));
+		short tmpShort = calCheckCode2(result);
+		System.out.println(tmpShort);
+		System.out.println(Arrays.toString(shortToByte(tmpShort)));
 		
 		//System.out.println(Arrays.toString(byteToString(date2Bytes(new Date()))));
 		
@@ -124,9 +154,9 @@ public class BytesUtils {
 		
 		//System.out.println(Arrays.toString(byteToString("E100AB0304.0101 ".getBytes())));
 		
-		String s1 = "S100D005V004", s2 = "2016-11-04";
+		//String s1 = "S100D005V004", s2 = "2016-11-04";
 		
-		System.out.println(Arrays.toString(byteToString(s1.getBytes())) + " -- "+Arrays.toString(byteToString(s2.getBytes())));
+		//System.out.println(Arrays.toString(byteToString(s1.getBytes())) + " -- "+Arrays.toString(byteToString(s2.getBytes())));
 		
 	}
 }
