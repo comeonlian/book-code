@@ -197,6 +197,15 @@ public class GdcpUtils {
 		}
 		return resStr.toString();
 	}
+	/**
+	 * 一个字节转16进制字符串
+	 * 
+	 * @param bytes
+	 * @return
+	 */
+	public static String byteToHexString(byte byteVal) {
+		return String.format("%02x", byteVal);
+	}
 
 	/**
 	 * 
@@ -271,5 +280,19 @@ public class GdcpUtils {
 		}
 		return result.toString().trim();
 	}
-
+	
+	
+	/* **************************************数据转发****************************************** */
+	/**
+	 * 数据转发校验码计算
+	 * @param bytes
+	 * @return
+	 */
+	public static String transCheckCode(byte[] bytes){
+		byte sum = 0;
+		for (int i = 2; i <= bytes.length - 2; i++) {
+			sum ^= (byte) (bytes[i] & 0xff);
+		}
+		return byteToHexString(sum);
+	}
 }
