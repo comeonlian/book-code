@@ -1,6 +1,7 @@
 package com.leo.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -186,7 +187,7 @@ public class GdcpUtils {
 	 * @param bytes
 	 * @return
 	 */
-	public static String byteToHexString(byte[] bytes) {
+	public static String byteToHexString(byte... bytes) {
 		StringBuffer resStr = new StringBuffer();
 		int len = bytes.length;
 		for (int i = 0; i < len; i++) {
@@ -196,6 +197,17 @@ public class GdcpUtils {
 				resStr.append(String.format("%02x", bytes[i]));
 		}
 		return resStr.toString();
+	}
+	/**
+	 * 整型转成无符号1字节数
+	 * 
+	 * @param d
+	 * @return
+	 */
+	public static byte intToUnsigned8(int d) {
+		byte result = 0;
+		result = (byte) (d & 0xff);
+		return result;
 	}
 	/**
 	 * 一个字节转16进制字符串
@@ -281,6 +293,21 @@ public class GdcpUtils {
 		return result.toString().trim();
 	}
 	
+	/**
+	 * 长整型转成无符号4字节数
+	 * 
+	 * @param d
+	 * @return
+	 */
+	public static byte[] longToUnsigned32(long d) {
+		byte[] result = new byte[4];
+		result[0] = (byte) ((d >> 24) & 0xff);
+		result[1] = (byte) ((d >> 16) & 0xff);
+		result[2] = (byte) ((d >> 8) & 0xff);
+		result[3] = (byte) (d & 0xff);
+		return result;
+	}
+	
 	
 	/* **************************************数据转发****************************************** */
 	/**
@@ -294,5 +321,162 @@ public class GdcpUtils {
 			sum ^= (byte) (bytes[i] & 0xff);
 		}
 		return byteToHexString(sum);
+	}
+	
+	/**
+	 * 在字符串中填充空格
+	 * @param s
+	 * @return
+	 */
+	public static String fillSpaceString(String s){
+		int len = s.length();
+		StringBuilder result = new StringBuilder();
+		for(int i=0; i<len; i++){
+			result.append(s.charAt(i));
+			if((i%2)==0)
+				result.append("");
+			else 
+				result.append(" ");
+		}
+		return result.toString();
+	}
+	
+	/**
+	 * 不够17位的数据，填充空格到17位
+	 * @param originData
+	 * @return
+	 */
+	public static String appendSpaceTo17(String originData){
+		int len = 17 - originData.length();
+		StringBuilder result = new StringBuilder(originData);
+		for(int i=0; i<len; i++){
+			result.append(" ");
+		}
+		return result.toString();
+	}
+	
+	
+	/* *************************************BCD码******************************************** */
+	
+	/*public static byte[] simToBCD(String deviceId) {
+		if(deviceId.length()!=12)
+			return null;
+		deviceId = "B" + deviceId;
+		byte[] deviceIdByte = new byte[7];
+		char[] temp = deviceId.toCharArray();
+		
+		deviceIdByte[0] = (byte) (temp[0] & 0xff);
+		for (int i = 1; i < 7; i++) {
+			deviceIdByte[i] = (byte) (((temp[2 * i - 1] << 4) & 0xf0) | (temp[2 * i] & 0x0f));
+		}
+		byte[] result = new byte[6];
+		System.arraycopy(deviceIdByte, 1, result, 0, 6);
+		return result;
+	}
+	
+	public static String bcdToString(byte[] data) {
+		byte[] carid = new byte[13];
+		carid[0] = 'B';
+		if (carid[0] < 'A' || carid[0] > 'Z') {
+			return null;
+		}
+		byte index = 1;
+		// 车机ID BCD码转换
+		for (int i = 0; i < 6; i++) {
+			carid[index++] = (byte) (((data[i] >> 4) & 0x0f) + 0x30);
+			carid[index++] = (byte) ((data[i] & 0x0f) + 0x30);
+		}
+		String caridString = new String(carid);
+		return caridString;
+	}*/
+	/**
+	 * SIM卡号转成BCD码
+	 * @param sim
+	 * @return
+	 */
+	public static byte[] simToBCD(String sim) {
+		if(sim.length()!=12)
+			return null;
+		byte[] deviceIdByte = new byte[6];
+		char[] temp = sim.toCharArray();
+		int index = 0;
+		for (int i=0; i < 12; i=i+2) {
+			deviceIdByte[index++] = (byte) (((temp[i] << 4) & 0xf0) | (temp[i+1] & 0x0f));
+		}
+		return deviceIdByte;
+	}
+	/**
+	 * BCD码转成SIM卡号
+	 * @param data
+	 * @return
+	 */
+	public static String bcdToSim(byte[] data) {
+		byte[] carid = new byte[12];
+		
+		byte index = 0;
+		// 车机ID BCD码转换
+		for (int i = 0; i < 6; i++) {
+			carid[index++] = (byte) (((data[i] >> 4) & 0x0f) + 0x30);
+			carid[index++] = (byte) ((data[i] & 0x0f) + 0x30);
+		}
+		String caridString = new String(carid);
+		return caridString;
+	}
+	/**
+	 * short类型转成  消息体属性
+	 * 0-9位：表示消息长度 
+	 * 10-12位
+	 * 13位
+	 * 14-15位：保留
+	 * @param i
+	 * @return
+	 */
+	public static String short2MsgProp(short i){
+		String s = Integer.toBinaryString(i);
+		s = String.format("%16s", s);
+		//s = String.format("%-16s", s);
+		s = s.replaceAll(" ", "0");
+		short j = Short.parseShort(s, 2);
+		System.out.println(Arrays.toString(short2Bytes(j)));
+		return byteToHexString(short2Bytes(j));
+	}
+	
+	/**
+	 * 对数据进行转义
+	 * 0x7e < ———— > 0x7d 后紧跟一个 0x02
+	 * 0x7d < ———— > 0x7d 后紧跟一个 0x01
+	 * @param originData
+	 * @return
+	 */
+	public static byte[] escapeData(byte[] originData){
+		int len = originData.length;
+		byte[] temp = new byte[2 * len];
+		int index = 0;
+		temp[index++] = 0x7E;
+		for(int i=1; i<len-1; i++){
+			if(originData[i]==0x7E){
+				temp[index++] = 0x7D;
+				temp[index++] = 0x02;
+			}else if(originData[i]==0x7D){
+				temp[index++] = 0x7D;
+				temp[index++] = 0x01;
+			}else{
+				temp[index++] = originData[i];
+			}
+		}
+		temp[index++] = 0x7E;
+		byte[] result = new byte[index];
+		System.arraycopy(temp, 0, result, 0, index);
+		return result;
+	}
+	/**
+	 * 时间转成BCD字符串
+	 * @param date
+	 * @return
+	 */
+	public static byte[] time2BCD(Date date){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
+		String res = sdf.format(date);
+		return simToBCD(res);
 	}
 }
