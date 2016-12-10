@@ -1,0 +1,7 @@
+option java_package="com.leolian.proto";
+option java_outer_classname="RequestParamProtobuf";
+
+message RequestParam{
+	required string cmd=1;
+	required bytes requestContent=2;
+}

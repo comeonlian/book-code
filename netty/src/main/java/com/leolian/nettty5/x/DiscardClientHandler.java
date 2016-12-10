@@ -29,15 +29,15 @@ public class DiscardClientHandler extends ChannelHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
-		ByteBuf in = (ByteBuf) msg;
+		/*ByteBuf in = (ByteBuf) msg;
 		StringBuilder sb = new StringBuilder();
 		while (in.isReadable()) { 
 			sb.append((char) in.readByte());
 			//System.out.print();
 			//System.out.flush();
-		}
-		ctx.channel().attr(AttributeKey.valueOf(CommonConstant.ATTRIBUTE_KEY)).set(sb.toString());
-		in.clear();
+		}*/
+		ctx.channel().attr(AttributeKey.valueOf(CommonConstant.ATTRIBUTE_KEY)).set(msg.toString());
+		//in.clear();
 		ctx.close();
 	}
 	

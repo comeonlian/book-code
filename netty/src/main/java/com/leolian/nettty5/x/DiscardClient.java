@@ -45,8 +45,8 @@ public class DiscardClient {
 			ChannelFuture future = client.connect(server, port).sync();
 			//future.channel().attr(AttributeKey.valueOf(CommonConstant.ATTRIBUTE_KEY)).set(obj);
 			
-			ByteBuf buf = pool.buffer().writeInt(obj);
-			future.channel().writeAndFlush(buf);
+			//ByteBuf buf = pool.buffer().writeInt(obj);
+			future.channel().writeAndFlush(" HEHE ");
 			
 			future.channel().closeFuture().sync();
 			

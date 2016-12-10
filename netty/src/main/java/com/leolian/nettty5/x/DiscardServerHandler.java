@@ -18,14 +18,16 @@ public class DiscardServerHandler extends ChannelHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
-		ByteBuf in = (ByteBuf) msg;
+		/*ByteBuf in = (ByteBuf) msg;
 		while (in.isReadable()) { 
 			System.out.print(in.readInt());
 			System.out.flush();
 		}
 		System.out.println();
-		ByteBuf buf = ctx.alloc().buffer().writeBytes("Hello client".getBytes("UTF-8"));
-		ctx.writeAndFlush(buf);
+		ByteBuf buf = ctx.alloc().buffer().writeBytes("Hello client".getBytes("UTF-8"));*/
+		System.out.println(msg);
+		String result = "I have receive your message ";
+		ctx.writeAndFlush(result);
 	}
 
 	@Override

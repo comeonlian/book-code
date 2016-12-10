@@ -26,4 +26,11 @@ public class DiscardClientTest {
 		
 	}
 	
+	@Test
+	public void testDecoder() throws Exception{
+		DiscardClient client = new DiscardClient("localhost", 8999);
+		System.out.println(client.run(1));
+	}
+	
+	
 }
