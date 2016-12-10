@@ -1,5 +1,6 @@
 package com.leo.utils;
 
+import java.awt.image.RescaleOp;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -294,6 +295,25 @@ public class GdcpUtils {
 	}
 	
 	/**
+	 * 十六进制码转成车机ID
+	 * 4D201500000001
+	 * @param hexStr
+	 * @return
+	 */
+	public static String hexString2DeviceId(String hexStr){
+		if(null==hexStr||hexStr.length()<=2)
+			return null;
+		if(hexStr.contains(" "))
+			hexStr.replaceAll(" ", "");
+		String chStr = hexStr.substring(0,2);
+		char ch = (char) Short.parseShort(chStr, 16);
+		//System.out.println(chStr);
+		StringBuilder sb = new StringBuilder();
+		sb.append(""+ch+hexStr.substring(2,hexStr.length()));
+		return sb.toString();
+	}
+	
+	/**
 	 * 长整型转成无符号4字节数
 	 * 
 	 * @param d
@@ -478,5 +498,33 @@ public class GdcpUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss");
 		String res = sdf.format(date);
 		return simToBCD(res);
+	}
+	/**
+	 * @param alarmType
+	 * @return
+	 */
+	public static int transAlarmType(int alarmType){
+		int result = 0;
+		switch (alarmType) {
+			case -6:
+				result = 6; 
+				break;
+			case -267:
+				result = 267;
+				break;
+			case -268:
+				result = 268;
+				break;
+			case -270:
+				result = 270;
+				break;
+			case -287:
+				result = 287;
+				break;
+			default:
+				result = alarmType;
+				break;
+		}
+		return result;
 	}
 }

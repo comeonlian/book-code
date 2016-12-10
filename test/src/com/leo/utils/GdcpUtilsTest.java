@@ -78,9 +78,19 @@ public class GdcpUtilsTest {
 		System.out.println(byteToHexString(longToUnsigned32(999999)));*/
 		
 		
-		double f = 4320 / 1000.0;
-		System.out.println(f);
+		//double f = 4320 / 1000.0;
+		//System.out.println(f);
 		
+		
+		//System.out.println(hexString2DeviceId("4D201500000001"));
+		
+		
+		System.out.println(fillSpaceString("4040006E000E4D641503000047001002100C0908381E0158222506CA94B8000000000000035207120C0E9205D1000000000000119C0000033500000229584A71BD100C09083B0001581F9B06CA93DA0000000000000046052E241D9205C9000000000000119C0000033500000229584A725305B6"));
+		
+		//System.out.println(version2HexString("M500AB0303"));
+		
+		
+		//System.out.println(transAlarmType(-6));
 		
 	}
 	
