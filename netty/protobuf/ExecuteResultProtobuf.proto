@@ -1,0 +1,7 @@
+option java_package="com.leolian.proto";
+option java_outer_classname="ExecuteResultProtobuf";
+
+message ExecuteResult{
+	required string cmd = 1;
+	required string result = 2;
+}

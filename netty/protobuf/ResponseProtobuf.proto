@@ -1,0 +1,7 @@
+option java_package="com.leolian.proto";
+option java_outer_classname="ResponseProtobuf";
+
+message Response{
+	required int32 id=1;
+	required bytes responseContent=2;
+}

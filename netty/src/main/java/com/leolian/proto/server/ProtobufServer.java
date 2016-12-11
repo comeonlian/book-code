@@ -1,5 +1,10 @@
 package com.leolian.proto.server;
 
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.core.Ordered;
+import org.springframework.stereotype.Component;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -11,10 +16,14 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * Netty服务端
  * @author Lian
  */
-public class ProtobufServer {
+@Component
+public class ProtobufServer implements ApplicationListener<ContextRefreshedEvent>,Ordered{
 	
 	private int port;
 	
+	public ProtobufServer() {
+	}
+
 	public ProtobufServer(int port) {
 		this.port = port;
 	}
@@ -29,7 +38,7 @@ public class ProtobufServer {
 			.childHandler(new ProtobufServerInitializer())
 			.option(ChannelOption.SO_BACKLOG, 128)
 			.childOption(ChannelOption.SO_KEEPALIVE, true);
-			System.out.println(" * START SERVER *");
+			System.out.println(" * START NETTY SERVER *");
 			ChannelFuture sync = server.bind(port).sync();
 			sync.channel().closeFuture().sync();
 		}catch(Exception e){
@@ -42,6 +51,17 @@ public class ProtobufServer {
 	
 	public static void main(String[] args) {
 		new ProtobufServer(8999).run();
+	}
+
+	/* ************************** spring 容器启动  ********************************* */
+	@Override
+	public void onApplicationEvent(ContextRefreshedEvent arg0) {
+		new ProtobufServer(8999).run();
+	}
+	
+	@Override
+	public int getOrder() {
+		return Ordered.LOWEST_PRECEDENCE;
 	}
 
 }

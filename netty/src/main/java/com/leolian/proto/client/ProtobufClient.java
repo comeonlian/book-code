@@ -15,7 +15,7 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.util.AttributeKey;
 
 import com.leolian.nettty5.x.common.CommonConstant;
-import com.leolian.proto.UserProtobuf.User;
+import com.leolian.proto.ResponseProtobuf.Response;
 
 public class ProtobufClient {
 	private String server;
@@ -40,7 +40,7 @@ public class ProtobufClient {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-					ch.pipeline().addLast(new ProtobufDecoder(User.getDefaultInstance()));
+					ch.pipeline().addLast(new ProtobufDecoder(Response.getDefaultInstance()));
 					ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
 					ch.pipeline().addLast(new ProtobufEncoder());
 					ch.pipeline().addLast(new ProtobufClientHandler());
@@ -52,12 +52,12 @@ public class ProtobufClient {
 		}
 	}
 	
-	public User run(Object obj) throws Exception{
+	public Response run(Object obj) throws Exception{
 		try{
 			ChannelFuture future = client.connect(server, port).sync();
 			future.channel().writeAndFlush(obj);
 			future.channel().closeFuture().sync();
-			return (User) future.channel().attr(AttributeKey.valueOf(CommonConstant.ATTRIBUTE_KEY)).get();
+			return (Response) future.channel().attr(AttributeKey.valueOf(CommonConstant.ATTRIBUTE_KEY)).get();
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
