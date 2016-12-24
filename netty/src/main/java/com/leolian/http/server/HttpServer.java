@@ -1,4 +1,4 @@
-package com.leolian.proto.server;
+package com.leolian.http.server;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,15 +16,15 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * Netty服务端
  * @author Lian
  */
-//@Component
-public class ProtobufServer implements ApplicationListener<ContextRefreshedEvent>,Ordered{
+@Component
+public class HttpServer implements ApplicationListener<ContextRefreshedEvent>,Ordered{
 	
 	private int port;
 	
-	public ProtobufServer() {
+	public HttpServer() {
 	}
 
-	public ProtobufServer(int port) {
+	public HttpServer(int port) {
 		this.port = port;
 	}
 	
@@ -35,7 +35,7 @@ public class ProtobufServer implements ApplicationListener<ContextRefreshedEvent
 			ServerBootstrap server = new ServerBootstrap();
 			server.group(bossGroup, workGroup)
 			.channel(NioServerSocketChannel.class)
-			.childHandler(new ProtobufServerInitializer())
+			.childHandler(new HttpServerInitializer())
 			.option(ChannelOption.SO_BACKLOG, 128)
 			.childOption(ChannelOption.SO_KEEPALIVE, true);
 			System.out.println(" * START NETTY SERVER *");
@@ -50,13 +50,13 @@ public class ProtobufServer implements ApplicationListener<ContextRefreshedEvent
 	}
 	
 	public static void main(String[] args) {
-		new ProtobufServer(8999).run();
+		new HttpServer(8999).run();
 	}
 
 	/* ************************** spring 容器启动  ********************************* */
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent arg0) {
-		new ProtobufServer(8999).run();
+		new HttpServer(8999).run();
 	}
 	
 	@Override

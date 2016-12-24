@@ -2,6 +2,7 @@ package com.leolian.operation;
 
 import org.springframework.stereotype.Controller;
 
+import com.leolian.http.entity.Person;
 import com.leolian.media.Remote;
 import com.leolian.proto.ExecuteResultProtobuf.ExecuteResult;
 import com.leolian.proto.ResponseProtobuf.Response;
@@ -24,6 +25,14 @@ public class UserController {
 			executeResult.setResult("execute failed");
 		}
 		return response.setId(1).setResponseContent(executeResult.build().toByteString());
+	}
+	
+	
+	@Remote("getPersonMail")
+	public Object getPersonMail(Person person){
+		System.out.println("Execute getPersonMail ,Person id:"+person.getId()+" name:"+person.getName());
+		person.setName("Response --- "+person.getName());
+		return person;
 	}
 	
 }

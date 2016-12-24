@@ -39,7 +39,7 @@ public class InitialMedia implements ApplicationListener<ContextRefreshedEvent>,
 					executeBean.setBean(bean);
 					executeBean.setMethod(method);
 					Media.beanMethods.put(cmd, executeBean);
-					//System.out.println("cmd : "+cmd);
+					System.out.println("cmd : "+cmd);
 				}
 			}
 		}
