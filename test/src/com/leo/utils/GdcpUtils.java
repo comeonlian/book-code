@@ -1,10 +1,13 @@
 package com.leo.utils;
 
-import java.awt.image.RescaleOp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GdcpUtils {
 	/**
@@ -306,10 +309,11 @@ public class GdcpUtils {
 		if(hexStr.contains(" "))
 			hexStr.replaceAll(" ", "");
 		String chStr = hexStr.substring(0,2);
-		char ch = (char) Short.parseShort(chStr, 16);
+		short ch = Short.parseShort(chStr, 16);
 		//System.out.println(chStr);
 		StringBuilder sb = new StringBuilder();
-		sb.append(""+ch+hexStr.substring(2,hexStr.length()));
+		System.out.println(ch);
+		sb.append(""+String.format("%02x", ch)+hexStr.substring(2,hexStr.length()));
 		return sb.toString();
 	}
 	
@@ -526,5 +530,125 @@ public class GdcpUtils {
 				break;
 		}
 		return result;
+	}
+	/**
+	 * 长整型转成无符号2字节数
+	 * 
+	 * @param d
+	 * @return
+	 */
+	public static byte[] longToUnsigned16(long d) {
+		byte[] result = new byte[2];
+		result[0] = (byte) ((d >> 8) & 0xff);
+		result[1] = (byte) (d & 0xff);
+		return result;
+	}
+	/**
+	 * 连接多个数组
+	 * @param ba
+	 * @return
+	 */
+	public static byte[] join(byte[]... ba) {
+		List<Byte> list = new ArrayList<Byte>();
+		for (byte[] item : ba) {
+			for (int i = 0; i < item.length; i++) {
+				list.add(item[i]);
+			}
+		}
+		Byte[] arr = list.toArray(new Byte[list.size()]);
+		byte[] na = new byte[arr.length];
+		for (int i=0;i<arr.length;i++) {
+			na[i] = arr[i];
+		}
+		return na;
+	}
+	
+	/**
+	 * OBD适配信息
+	 * 构造下发数据包
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	public static byte [] parseObdAdaptInfo(List<String> param) throws Exception{
+		byte[] result = join(
+				new byte[]{0x01, 0x02}, 
+				longToUnsigned16(parseStringToLong(param.get(0))), //协议类型  2
+				new byte[]{0x02, 0x01}, 
+				new byte[]{intToUnsigned8((int) parseStringToLong(param.get(1)))}, //读码方式  1
+				new byte[]{0x03, 0x04}, 
+				longToUnsigned32(parseStringToLong(param.get(2))), //防盗协议  4
+				new byte[]{0x04, 0x04}, 
+				longToUnsigned32(parseStringToLong(param.get(3))), //车型ID 4
+				new byte[]{0x05, 0x02}, 
+				longToUnsigned16(parseStringToLong(param.get(4))), //帧与帧间隔  2
+				new byte[]{0x06, 0x04}, 
+				longToUnsigned32(parseStringToLong(param.get(5))), //ECU地址 4
+				new byte[]{0x07, 0x02}, 
+				longToUnsigned16(parseStringToLong(param.get(6))), //油耗系数  2
+				new byte[]{0x08, 0x02}, 
+				longToUnsigned16(parseStringToLong(param.get(7))), //里程系数 2
+				new byte[]{0x09, 0x01}, 
+				new byte[]{intToUnsigned8((int) parseStringToLong(param.get(8)))}, //排量  1 
+				new byte[]{0x0a, 0x02}, 
+				longToUnsigned16(parseStringToLong(param.get(9))), //油品密度 2
+				new byte[]{0x0b, 0x01}, 
+				new byte[]{intToUnsigned8((int) parseStringToLong(param.get(10)))}, //油耗计算方法 1
+				new byte[]{0x0c, 0x01}, 
+				new byte[]{intToUnsigned8((int) parseStringToLong(param.get(11)))}, //数据流读取时间  1
+				new byte[]{0x0d, 0x01}, 
+				new byte[]{intToUnsigned8((int) parseStringToLong(param.get(12)))}, //换车标志  1
+				new byte[]{0x0e, 0x01}, 
+				new byte[]{intToUnsigned8((int) parseStringToLong(param.get(13)))}, //车辆动力类型  1
+				new byte[]{0x0F, 0x02},
+				longToUnsigned16((int) parseStringToLong(param.get(14))),  //最大扭矩  2
+				new byte[]{0x10, 0x01},
+				new byte[]{intToUnsigned8((int) parseStringToLong(param.get(15)))}, //发动机缸数  1
+				new byte[]{0x11, 0x02},
+				longToUnsigned16((int) parseStringToLong(param.get(16))),  //满载电量  2
+				new byte[]{0x12, 0x04}, 
+				longToUnsigned32(parseStringToLong(param.get(17)))//保留数据  4
+		);
+		return result;
+	}
+	/**
+	 * 十六进制-十进制字符串转成整型
+	 * @param value
+	 * @return
+	 */
+	public static long parseStringToLong(String value){
+		long result = 0;
+		value = value.toLowerCase();
+		if(null==value || value.trim().length()==0){
+			result = 0;
+		}else if(value.startsWith("0x")){
+			value = value.trim();
+			value = value.replaceAll("0x", "");
+			result = Long.valueOf(value, 16);
+		}else{
+			value = value.trim();
+			if(isNumeric(value)){
+				double tmp = Double.valueOf(value);
+				result = (long) tmp;
+			}else{
+				result = 0;
+			}
+		}
+		return result;
+	}
+	
+	public static boolean isNumeric(String str){ 
+		Pattern pattern = Pattern.compile("[0-9]+(\\.\\d+)?"); 
+		Matcher isNum = pattern.matcher(str);
+		if( !isNum.matches() ){
+			return false; 
+		} 
+		return true; 
+	}
+	
+	public static String getPlatformVin(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd hh:mm:ss");
+		String date = sdf.format(new Date());
+		return date;
 	}
 }
