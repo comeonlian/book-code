@@ -3,14 +3,20 @@ package com.leo.utils;
 import static com.leo.utils.GdcpUtils.*;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import org.hamcrest.core.IsNull;
 import org.junit.Test;
 
 public class GdcpUtilsTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		//System.out.println(GdcpUtils.byteToHexString("N".getBytes()));
 		
@@ -20,17 +26,17 @@ public class GdcpUtilsTest {
 		 * 23 23 02 00 4c 41 38 36 46 30 4d 43 31 46 42 35 30 30 39 36 36 53 35 33 34 31 30 30 30 30 31 32 35 39 01 00 22 10 09 14 0a 25 0c 10 09 14 0a 25 09 07 00 06 ce 4d f2 01 d1 cd 60 00 00 00 13 00 6 66 e6 3f 0b 00 00 f5
 		 * */
 		
-		/*byte[] bytes = hexStr2Bytes("23 23 02 00 4c 41 38 36 46 30 4d 43 31 46 42 35 30 30 39 36 36 53 35 33 34 31 30 30 30 30 31 32 35 39 01 00 22 10 09 14 0a 25 0c 10 09 14 0a 25 09 07 00 06 ce 4d f2 01 d1 cd 60 00 00 00 13 00 6 66 e6 3f 0b 00 00 f5");
-		System.out.println(Arrays.toString(bytes));
+		//byte[] bytes = hexStr2Bytes("40 40 00 45 00 05 45 10 06 37 10 05 50 00 21 01 01 11 01 06 09 36 1c 01 e5 6b 5b 06 fc cf 6a 00 00 0a 8c 00 00 03 2a 03 35 28 23 13 04 44 00 00 03 65 00 07 46 40 00 03 f4 3d 00 01 b1 59 58 62 03 b3 00 33 00 03 01 00 00 6b 4e");
+		//System.out.println(Arrays.toString(bytes));
 		
-		System.out.println(transCheckCode(bytes));*/
+		//System.out.println(entrance("40 40 00 45 00 05 45 10 06 37 10 05 50 00 21 01 01 11 01 06 09 36 1c 01 e5 6b 5b 06 fc cf 6a 00 00 0a 8c 00 00 03 2a 03 35 28 23 13 04 44 00 00 03 65 00 07 46 40 00 03 f4 3d 00 01 b1 59 58 62 03 b3 00 33 00 03 01 00 00 6b 4e"));
 		
 		//System.out.println(hexString2Byte("FE"));
 		
 		//byte[] bytes = hexStr2Bytes("45 31 30 30 36 33 37 31 30 30 35 34 39");
 		//System.out.println(new String(bytes));
 		
-		//System.out.println(fillSpaceString("232303004C4B4A47484E4744454A4B46554E43524C45313030363337313030353439010043100B150F0E21100B150F0E210A0B2F0100111AE80002C6F0FFFF03F81CFF6AFFFFFFFFFFFFFF00040004FFFFFFFFFFFFFFFF00FFFFFFFFFFFFFFFF000541DC02E86280A0"));
+		//System.out.println(fillSpaceString("4040004900234D6145000018638007010201010201000304000000000404000015000502006706040000000307020000080200000901700A02005C0B01050C011E0D01030E01050F04000000004A2F0D0A"));
 		/*String result = String.format("%-17s", "E LDM");
 		System.out.println(result);
 		System.out.println(result.length());*/
@@ -85,13 +91,96 @@ public class GdcpUtilsTest {
 		//System.out.println(hexString2DeviceId("4D201500000001"));
 		
 		
-		System.out.println(fillSpaceString("4040006E000E4D641503000047001002100C0908381E0158222506CA94B8000000000000035207120C0E9205D1000000000000119C0000033500000229584A71BD100C09083B0001581F9B06CA93DA0000000000000046052E241D9205C9000000000000119C0000033500000229584A725305B6"));
+		System.out.println(fillSpaceString("232302FE4C42394B42384B453345454E4A4C38383701006C1101130F0334010101FF000000023CFF169F233C59FF00FFFF000002010100130000FFFF481644FFFF03FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF04FFFFFFFFFF06FFFF0FFFFFFFFFFF01003E01003C07FF00000000FFFFFFFFFF01FFFFFFFFFFFFFFFFFFFFFFFFFFFF1F"));
 		
-		//System.out.println(version2HexString("M500AB0303"));
+		//System.out.println(version2HexString("N100DEMO10"));
 		
 		
 		//System.out.println(transAlarmType(-6));
 		
+		
+		//System.out.println(String.format("%02x", 57360));
+		
+		/*byte[] result = new byte[]{};
+		for(int i=0; i<10; i++){
+			result = join(
+				result, 
+				new byte[]{ intToUnsigned8(i) },
+				new byte[]{ intToUnsigned8(i+1) }
+			);
+		}
+		System.out.println(Arrays.toString(result));*/
+		
+		
+		//System.out.println(hexString2DeviceId("E100637101320"));
+		//System.out.println(hexString2DeviceId("E100637100550"));
+		
+		//System.out.println(Double.valueOf("12.1526"));
+		
+		//List<String> list = new ArrayList<String>();
+		//list.add(null);
+		//list.add("1");
+		//System.out.println(list.get(0));
+		//System.out.println(list.get(1));
+		
+		//System.out.println(isNumeric("a23s.0"));
+		/*String sTime = "2017-01-13 14:00:00";
+		String eTime = "2017-01-13 15:00:00";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		Date startDate = sdf.parse(sTime);
+		Date endDate = sdf.parse(eTime);
+		calendar.setTime(startDate);
+		System.out.println(calendar.getTimeInMillis());
+		calendar.setTime(endDate);
+		System.out.println(calendar.getTimeInMillis());*/
+		
+		/*String protocolType = "0X0101"; //协议类型
+		String readType = "0x01"; //读码方式
+		String guardProtocol = "0x00000005"; //防盗协议
+		String carTypeID = "0X00001500"; //车型ID
+		String interval = "350";  //帧与帧间隔
+		String ecu = "0x00000111"; //ECU地址 
+		String fuel = "50"; //油耗系数
+		String distance = "10";  //里程系数
+		String displacement = "60";  //排量
+		String fuelOilType = "737";  //油品密度
+		String fuelOilMethod = "0x04"; //油耗计算方法
+		String streamReadTime = "50"; //数据流读取时间
+		String changeCarFlag = "0x02"; //换车标志
+		String powerType = "0x01"; //车辆动力类型
+		String maxTorque = "1000"; //最大扭矩
+		String engineNum = "8"; //发动机缸
+		String fullPower = "400"; //满载电量
+		List<String> paraList = new ArrayList<String>();
+		paraList.add(protocolType);
+		paraList.add(readType);
+		paraList.add(guardProtocol);
+		paraList.add(carTypeID);
+		paraList.add(interval);
+		paraList.add(ecu);
+		paraList.add(fuel);
+		paraList.add(distance);
+		paraList.add(displacement);
+		paraList.add(fuelOilType);
+		paraList.add(fuelOilMethod);
+		paraList.add(streamReadTime);
+		paraList.add(changeCarFlag);
+		paraList.add(powerType);
+		paraList.add(maxTorque);
+		paraList.add(engineNum);
+		paraList.add(fullPower);
+		paraList.add("0");
+		
+		byte[] result = parseObdAdaptInfo(paraList);
+		System.out.println(byteToHexString(result));*/
+		
+		
+		//System.out.println(getPlatformVin());
+		
+		//String uName = "13391919685";
+		//uName = String.format("%-12s", uName);
+		//System.out.println(Arrays.toString(uName.getBytes()));
 	}
 	
 	
