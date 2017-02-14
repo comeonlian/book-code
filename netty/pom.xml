@@ -82,6 +82,11 @@
 			<version>1.7.5</version>
 		</dependency>
 		
+		<!-- <dependency>
+			<groupId>com.leolian</groupId>
+			<artifactId>thrift</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency> -->
 	</dependencies>
 	
 </project>
