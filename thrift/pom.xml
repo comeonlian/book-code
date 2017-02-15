@@ -17,13 +17,18 @@
 	
 	<dependencies>
 		<dependency>
-		 	<groupId>org.apache.thrift</groupId>
-		  	<artifactId>libthrift</artifactId>
-		  	<version>0.9.3</version>
+			<groupId>org.apache.thrift</groupId>
+			<artifactId>libthrift</artifactId>
+			<version>0.10.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.8</version>
 		</dependency>
 	</dependencies>
 	
-	<pluginRepositories>
+	<!-- <pluginRepositories>
 		<pluginRepository>
 			<id>dtrott</id>
 			<url>http://maven.davidtrott.com</url>
@@ -116,5 +121,5 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-	</build>
+	</build> -->
 </project>

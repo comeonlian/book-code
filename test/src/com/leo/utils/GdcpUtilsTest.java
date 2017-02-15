@@ -91,9 +91,9 @@ public class GdcpUtilsTest {
 		//System.out.println(hexString2DeviceId("4D201500000001"));
 		
 		
-		System.out.println(fillSpaceString("232302FE4C42394B42384B453345454E4A4C38383701006C1101130F0334010101FF000000023CFF169F233C59FF00FFFF000002010100130000FFFF481644FFFF03FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF04FFFFFFFFFF06FFFF0FFFFFFFFFFF01003E01003C07FF00000000FFFFFFFFFF01FFFFFFFFFFFFFFFFFFFFFFFFFFFF1F"));
+		//System.out.println(fillSpaceString("232302FE4C42394B42384B453345454E4A4C38383701006C1101130F0334010101FF000000023CFF169F233C59FF00FFFF000002010100130000FFFF481644FFFF03FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF04FFFFFFFFFF06FFFF0FFFFFFFFFFF01003E01003C07FF00000000FFFFFFFFFF01FFFFFFFFFFFFFFFFFFFFFFFFFFFF1F"));
 		
-		//System.out.println(version2HexString("N100DEMO10"));
+		//System.out.println(version2HexString("N100AB0102"));
 		
 		
 		//System.out.println(transAlarmType(-6));
@@ -181,6 +181,25 @@ public class GdcpUtilsTest {
 		//String uName = "13391919685";
 		//uName = String.format("%-12s", uName);
 		//System.out.println(Arrays.toString(uName.getBytes()));
+		//int d = 255;
+		//System.out.println(byteToHexString(intToUnsigned8(d)));
+		/*byte[] temp = new byte[]{};
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(8);
+		for (Integer integer : list) {
+			temp = join(
+				temp,
+				new byte[]{intToUnsigned8(integer)}
+			);
+		}
+		System.out.println(Arrays.toString(temp));*/
+		
+		//System.out.println(byteToHexString("java".getBytes()));
+		int i = 0;
+		for(; i<5; i++){
+			System.out.print(" hehe ");
+		}
+		System.out.println("i="+i);
 	}
 	
 	
