@@ -5,9 +5,14 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TMemoryBuffer;
+
 import com.google.protobuf.ByteString;
 import com.leolian.http.entity.RequestParameter;
 import com.leolian.proto.RequestParamProtobuf.RequestParam;
+import com.leolian.thrift.demo.ThriftRequest;
 import com.leolian.utils.JsonUtils;
 
 /**
@@ -30,15 +35,18 @@ public class Media {
 			}else if(obj instanceof RequestParameter){
 				RequestParameter parameter = (RequestParameter) obj;
 				cmd = parameter.getCommand();
+			}else if(obj instanceof ThriftRequest){
+				ThriftRequest param = (ThriftRequest) obj;
+				cmd = param.getCommond();
 			}
 			
 			ExecuteBean executeBean = beanMethods.get(cmd);
 			Object targetBean = executeBean.getBean();
 			Method targetMethod = executeBean.getMethod();
+			//需要执行的方法的参数类型
+			Class<?> paramType = targetMethod.getParameterTypes()[0];
 			
 			if(obj instanceof RequestParam){
-				//需要执行的方法的参数类型
-				Class<?> paramType = targetMethod.getParameterTypes()[0];
 				//方法的参数类型的构造器
 				Constructor[] paramTypeConstructors = paramType.getDeclaredConstructors();
 				Constructor c = null; //构造器
@@ -61,6 +69,15 @@ public class Media {
 				RequestParameter parameter = (RequestParameter) obj;
 				//paramObj = JsonUtils.jsonToBean(parameter.getParameter().toString(), targetMethod.getParameterTypes()[0]);
 				paramObj = parameter.getParameter();
+			}else if(obj instanceof ThriftRequest){
+				ThriftRequest request = (ThriftRequest) obj;
+				byte[] param = request.getRequestParam();
+				Method paramMethod = paramType.getMethod("read", TProtocol.class);
+				paramObj = paramType.newInstance();
+				TMemoryBuffer buffer = new TMemoryBuffer(param.length);
+				buffer.write(param);
+				TProtocol prot = new TBinaryProtocol(buffer);
+				paramMethod.invoke(paramObj, prot);
 			}
 			
 			//调用目标方法

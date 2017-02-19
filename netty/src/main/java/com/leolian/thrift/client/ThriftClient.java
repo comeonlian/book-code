@@ -1,6 +1,13 @@
 package com.leolian.thrift.client;
 
+import java.lang.reflect.Method;
+
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TMemoryBuffer;
+
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -12,10 +19,9 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.util.AttributeKey;
 
-import java.net.URI;
-
 import com.leolian.nettty5.x.common.CommonConstant;
 import com.leolian.thrift.coder.ThriftClientEncoder;
+import com.leolian.thrift.demo.Content;
 
 public class ThriftClient {
 	private String server;
@@ -50,13 +56,24 @@ public class ThriftClient {
 		}
 	}
 	
-	public Object run(Object obj) throws Exception{
+	public Object run(Object obj, Class clazz) throws Exception{
 		try{
 			ChannelFuture future = client.connect(server, port).sync();
-			URI uri = new URI("http://127.0.0.1:8999");
 			future.channel().writeAndFlush(obj);
 			future.channel().closeFuture().sync();
-			return future.channel().attr(AttributeKey.valueOf(CommonConstant.ATTRIBUTE_KEY)).get();
+			
+			ByteBuf result = (ByteBuf) future.channel().attr(AttributeKey.valueOf(CommonConstant.ATTRIBUTE_KEY)).get();
+			byte[] dst = new byte[result.readableBytes()];
+			result.readBytes(dst);
+			TMemoryBuffer buffer3 = new TMemoryBuffer(1024);
+			buffer3.write(dst);
+			TProtocol prot3 = new TBinaryProtocol(buffer3);
+//			Content response = new Content();
+//			response.read(prot3);
+			Object clazzObj = clazz.newInstance();
+			Method read = clazz.getMethod("read", TProtocol.class);
+			read.invoke(clazzObj, prot3);
+			return clazzObj;
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
