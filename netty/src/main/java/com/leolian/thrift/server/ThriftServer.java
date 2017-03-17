@@ -16,7 +16,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * Netty服务端
  * @author Lian
  */
-@Component
+//@Component
 public class ThriftServer implements ApplicationListener<ContextRefreshedEvent>,Ordered{
 	
 	private int port;
