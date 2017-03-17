@@ -309,9 +309,19 @@ public class GdcpUtilsTest {
 	
 	@Test
 	public void testException(){
-		byte[] bytes = new byte[]{0x38, 0x39, 0x38, 0x36, 0x30, 0x32, 0x42, 0x33, 0x32, 0x32, 0x31, 0x35, 0x43, 0x30, 0x30, 0x30, 0x36, 0x31, 0x31, 0x35};
+		/*byte[] bytes = new byte[]{0x38, 0x39, 0x38, 0x36, 0x30, 0x32, 0x42, 0x33, 0x32, 0x32, 0x31, 0x35, 0x43, 0x30, 0x30, 0x30, 0x36, 0x31, 0x31, 0x35};
 		String s = new String(bytes);
-		System.out.println(s);
+		System.out.println(s);*/
+		
+		String s1 = "shjikedfrjhyedkiwoskcmvn";
+		String s2 = "shfgkedhjjherdk";
+		String s3 = "jikowlefdqnjizsewdbg";
+		String s4 = "okmwdcfwwqajhgr";
+		
+		System.out.println(byteToHexString(s1.getBytes()));
+		System.out.println(byteToHexString(s2.getBytes()));
+		System.out.println(byteToHexString(s3.getBytes()));
+		System.out.println(byteToHexString(s4.getBytes()));
 		
 	}
 	
