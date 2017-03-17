@@ -6,8 +6,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 public class GdcpUtils {
 	/**
@@ -650,5 +654,54 @@ public class GdcpUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd hh:mm:ss");
 		String date = sdf.format(new Date());
 		return date;
+	}
+	
+	/**
+	 * 整型转成无符号2字节数
+	 * 
+	 * @param d
+	 * @return
+	 */
+	public static byte[] intToUnsigned16(int d) {
+		byte[] result = new byte[2];
+		result[0] = (byte) ((d >> 8) & 0xff);
+		result[1] = (byte) (d & 0xff);
+		return result;
+	}
+	
+	public static byte[] buildFullCommand(String deviceId, int commandId, byte[] contents){
+		AtomicInteger sn = new AtomicInteger(1);
+		ByteBuf response = Unpooled.buffer(17 + contents.length);
+		// 头部
+		response.writeShort(0x4040);
+		// 长度
+		response.writeShort(11 + contents.length);
+		// 流水
+		response.writeShort(sn.getAndDecrement());
+		// 车机号
+		response.writeBytes(toBCD(deviceId));
+		// 功能ID
+		response.writeShort(commandId);
+		// 应答内容
+		response.writeBytes(contents);
+		// CRC16
+		response.writeShort(CRC16(response.copy(0, 15 + contents.length).array()));
+		byte[] bytes = new byte[response.readableBytes()];
+		response.readBytes(bytes);
+		return bytes;
+	}
+	
+	public static byte[] toBCD(String carid){
+		byte[] caridbyte = new byte[7];
+		char[] temp = carid.toCharArray();
+		if (temp.length != 13) {
+			return null;
+		}
+		caridbyte[0] = (byte) (temp[0] & 0xff);
+		for (int i = 1; i < 7; i++) {
+			caridbyte[i] = (byte) (((temp[2 * i - 1] << 4) & 0xf0) | (temp[2 * i] & 0x0f));
+		}
+
+		return caridbyte;
 	}
 }
