@@ -3,7 +3,23 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaTool"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib4/pinyin4j-2.5.0.jar"/>
 	<classpathentry kind="lib" path="lib3/netty-all-4.0.30.Final.jar"/>
+	<classpathentry kind="lib" path="lib4/pinyin4j-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib5/jetty-all-9.2.6.v20141205.jar"/>
+	<classpathentry kind="lib" path="lib5/servlet-api-3.1.jar"/>
+	<classpathentry kind="lib" path="lib5/log4j-api-2.7.jar"/>
+	<classpathentry kind="lib" path="lib5/log4j-core-2.7.jar"/>
+	<classpathentry kind="lib" path="lib5/log4j-slf4j-impl-2.7.jar"/>
+	<classpathentry kind="lib" path="lib5/slf4j-api-1.7.22.jar"/>
+	<classpathentry kind="lib" path="lib6/commons-codec-1.9.jar"/>
+	<classpathentry kind="lib" path="lib6/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib6/fluent-hc-4.5.3.jar"/>
+	<classpathentry kind="lib" path="lib6/httpclient-4.5.3.jar"/>
+	<classpathentry kind="lib" path="lib6/httpclient-cache-4.5.3.jar"/>
+	<classpathentry kind="lib" path="lib6/httpclient-win-4.5.3.jar"/>
+	<classpathentry kind="lib" path="lib6/httpcore-4.4.6.jar"/>
+	<classpathentry kind="lib" path="lib6/httpmime-4.5.3.jar"/>
+	<classpathentry kind="lib" path="lib6/jna-4.1.0.jar"/>
+	<classpathentry kind="lib" path="lib6/jna-platform-4.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
