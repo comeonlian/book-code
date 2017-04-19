@@ -16,11 +16,10 @@ public class CommonTest {
 	}
 	
 	/*
-	 * 中文转成拼音
 	 */
 	@Test
 	public void testChinese2Pinyin(){
-		String[] sarr = PinyinHelper.toHanyuPinyinStringArray('练');
+		String[] sarr = PinyinHelper.toHanyuPinyinStringArray('a');
 		for (int i = 0; i < sarr.length; i++) {
 			System.out.println(sarr[i]);
 		}
