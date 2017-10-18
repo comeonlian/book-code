@@ -33,4 +33,13 @@ public class NumberTest {
 		//la.increment();
 		System.out.println(la.intValue());
 	}
+	
+	@Test
+	public void testTimer(){
+		long period = 3000;
+		if (Math.abs(period) > (Long.MAX_VALUE >> 1))
+			period >>= 1;
+			System.out.println(period);
+	}
+	
 }

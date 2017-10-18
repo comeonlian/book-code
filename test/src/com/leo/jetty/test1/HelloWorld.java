@@ -15,7 +15,7 @@ public class HelloWorld extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 2271797150647771294L;
 
-	private String msg = "hello world~~~~~~";
+	private String msg = "hello world, heheda";
 
 	public HelloWorld() {
 	}
@@ -26,7 +26,24 @@ public class HelloWorld extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
+		String username = req.getParameter("username");
+		String password = req.getParameter("password");
+		System.out.println("param: username="+username+" ,password="+password);
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("application/json; charset=utf-8");
+		resp.setStatus(HttpServletResponse.SC_OK);
+		String jsonStr = "{\"username\":\""+username+"\",\"password\":\""+password+"\"}";
+		PrintWriter out = null;
+		try {
+			out = resp.getWriter();
+			out.write(jsonStr);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
 	}
 
 	@Override
@@ -38,8 +55,8 @@ public class HelloWorld extends HttpServlet {
 		resp.setStatus(HttpServletResponse.SC_OK);
 		PrintWriter pWriter = resp.getWriter();
 		pWriter.println("<h1>" + msg + "</h1>");
-		pWriter.println("²âÊÔÖÐÎÄÐÅÏ¢:" + req.getSession(true).getId());
-		pWriter.println("<h3>ÓÃ»§ÐÅÏ¢:" + userName + "</h3>");
-		pWriter.println("<h3>ÓÃ»§ÃÜÂë:" + password + "</h3>");
+		pWriter.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢:" + req.getSession(true).getId());
+		pWriter.println("<h3>ï¿½Ã»ï¿½ï¿½ï¿½Ï¢:" + userName + "</h3>");
+		pWriter.println("<h3>ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½:" + password + "</h3>");
 	}
 }
