@@ -1,8 +1,6 @@
 package com.leolian.transdata;
 
-import com.leolian.transdata.redis.JedisPoolUtil;
-
-import redis.clients.jedis.Jedis;
+import org.junit.Test;
 
 /**
  * Unit test for simple App.
@@ -20,8 +18,21 @@ public class TransDataTest {
 		System.out.println(val);
 		jedisPoolUtil.release(jedis);*/
 		
-		String s = "370111196701024810";
-		System.out.println(s.length());
+		/*String s = "370111196701024810";
+		System.out.println(s.length());*/
+		
+		String imei = "234324";
+		String mac = "dfdsfsd";
+		String res = imei + "\t" + mac;
+		System.out.println(res);
+		
+	}
+	
+	@Test
+	public void testBoolean() {
+		boolean zdrRelationCorrectEnable = true;
+		String tableName = zdrRelationCorrectEnable == true? "RELATION_CORRECT" : "RELATION";
+		System.out.println(tableName);
 	}
 	
 }

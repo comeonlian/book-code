@@ -1,5 +1,8 @@
 package com.leo.test;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -27,5 +30,23 @@ public class JsonTest {
 	public void testNum() {
 		String s = "01";
 		System.out.println(Integer.valueOf(s));
+		
 	}
+	
+	@Test
+	public void testDate() {
+		DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+		long startTime = DateTime.parse("2018-4-15 00:00:00", format).getMillis() / 1000;
+		long endTime = DateTime.parse("2018-4-15 23:59:59", format).getMillis() / 1000;
+		System.out.println(startTime + "-" + endTime);
+	}
+	
+	@Test
+	public void testMills() {
+		DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+		long startTime = DateTime.parse("2018-4-15 00:00:00", format).getMillis() / 1000;
+		long endTime = DateTime.parse("2018-4-15 24:00:00", format).getMillis() / 1000;
+		System.out.println(startTime+" - "+endTime);
+	}
+	
 }

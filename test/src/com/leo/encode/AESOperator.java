@@ -1,130 +1,130 @@
-package com.leo.encode;
-
-import java.util.Random;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-/**
- * AES ÊÇÒ»ÖÖ¿ÉÄæ¼ÓÃÜËã·¨£¬¶ÔÓÃ»§µÄÃô¸ĞĞÅÏ¢¼ÓÃÜ´¦Àí ¶ÔÔ­Ê¼Êı¾İ½øĞĞAES¼ÓÃÜºó£¬ÔÚ½øĞĞBase64±àÂë×ª»¯£»
- */
-public class AESOperator {
-	//¼ÓÃÜÓÃµÄKey ¿ÉÒÔÓÃ26¸ö×ÖÄ¸ºÍÊı×Ö×é³É ´Ë´¦Ê¹ÓÃAES-128-CBC¼ÓÃÜÄ£Ê½
-	//keyºÍÏòÁ¿¶¼ĞèÒªÎª16Î»¡£
-	private String sKey = "fhqji26gflzo8byo";
-	private String ivParameter = "w3aqkgjjqxf8e7b2";
-	private static AESOperator instance = null;
-	
-	private static char[] chars = new char[]{
-			'a', 'b', 'c', 'f', 'e', 'f', 'g',
-			'h', 'i', 'j', 'k', 'l', 'm', 'o',
-			'p', 'q', 'r', 's', 't', 'u', 'v',
-			'w', 'x', 'y', 'z', '0', '1', '2',
-			'3', '4', '5', '6', '7', '8', '9',
-	};
-	private static Random random = new Random();
-	
-	private AESOperator() { }
-	
-	public static AESOperator getInstance() {
-		if (instance == null)
-			instance = new AESOperator();
-		return instance;
-	}
-	
-	/**
-	 * Ëæ»úÉú³ÉÒ»¸ökey
-	 * @return
-	 */
-	public static String initKey(){
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 16; i++) {
-			int rand = random.nextInt(34);
-			sb.append(chars[rand]);
-		}
-		return sb.toString();
-	}
-	
-	/**
-	 * Ëæ»úÉú³ÉÒ»¸öivParameter
-	 * @return
-	 */
-	public static String initIvParameter(){
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 16; i++) {
-			int rand = random.nextInt(34);
-			sb.append(chars[rand]);
-		}
-		return sb.toString();
-	}
-	
-	// ¼ÓÃÜ
-	public String encrypt(String sSrc) {
-		String result = "";
-		try {
-			Cipher cipher;
-			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			byte[] raw = sKey.getBytes();
-			SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-			IvParameterSpec iv = new IvParameterSpec(ivParameter.getBytes());// Ê¹ÓÃCBCÄ£Ê½£¬ĞèÒªÒ»¸öÏòÁ¿iv£¬¿ÉÔö¼Ó¼ÓÃÜËã·¨µÄÇ¿¶È
-			cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
-			byte[] encrypted = cipher.doFinal(sSrc.getBytes("utf-8"));
-			result = new BASE64Encoder().encode(encrypted);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// ´Ë´¦Ê¹ÓÃBASE64×ö×ªÂë¡£
-		return result;
-	}
-
-	// ½âÃÜ
-	public String decrypt(String sSrc) {
-		try {
-			byte[] raw = sKey.getBytes("ASCII");
-			SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-			IvParameterSpec iv = new IvParameterSpec(ivParameter.getBytes());
-			cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-			byte[] encrypted1 = new BASE64Decoder().decodeBuffer(sSrc);// ÏÈÓÃbase64½âÃÜ
-			byte[] original = cipher.doFinal(encrypted1);
-			String originalString = new String(original, "utf-8");
-			return originalString;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null;
-		}
-	}
-
-	public static void main(String[] args) {
-		// ĞèÒª¼ÓÃÜµÄ×Ö´®
-		/*String cSrc = "root";
-		System.out.println(cSrc + "  ³¤¶ÈÎª" + cSrc.length());
-		// ¼ÓÃÜ
-		long lStart = System.currentTimeMillis();
-		String enString = AESOperator.getInstance().encrypt(cSrc);
-		System.out.println("¼ÓÃÜºóµÄ×Ö´®ÊÇ£º" + enString + " ³¤¶ÈÎª" + enString.length());
-		
-		long lUseTime = System.currentTimeMillis() - lStart;
-		System.out.println("¼ÓÃÜºÄÊ±£º" + lUseTime + "ºÁÃë");
-		// ½âÃÜ
-		lStart = System.currentTimeMillis();
-		String DeString = AESOperator.getInstance().decrypt(enString);
-		System.out.println("½âÃÜºóµÄ×Ö´®ÊÇ£º" + DeString);
-		lUseTime = System.currentTimeMillis() - lStart;
-		System.out.println("½âÃÜºÄÊ±£º" + lUseTime + "ºÁÃë");*/
-		
-		byte[] bytes = new byte[]{0x45, 0x31, 0x30, 0x30, 0x41, 0x42, 0x30, 0x31, 0x30, 0x32, 0x2C, 0x31, 0x39, 0x32, 0x2E, 0x31, 0x36, 0x38, 0x2E, 0x31, 0x2E, 0x36, 0x36, 0x2C, 0x38, 0x30, 0x38, 0x30, 0x2C, 0x72, 0x6F, 0x6F, 0x74, 0x2C, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x2C, 0x45, 0x31, 0x30, 0x30, 0x41, 0x42, 0x30, 0x30, 0x30, 0x30, 0x2E, 0x70, 0x61, 0x72, 0x74, 0x31, 0x2C, 0x2F, 0x68, 0x6F, 0x6D, 0x65, 0x2F, 0x2C};
-		String s = new String(bytes);
-		System.out.println(s);
-		//System.out.println(initKey());
-		//System.out.println(initIvParameter());
-	}
-	
-	
-	
-	
-}
+//package com.leo.encode;
+//
+//import java.util.Random;
+//
+//import javax.crypto.Cipher;
+//import javax.crypto.spec.IvParameterSpec;
+//import javax.crypto.spec.SecretKeySpec;
+//
+//import sun.misc.BASE64Decoder;
+//import sun.misc.BASE64Encoder;
+//
+///**
+// * AES ï¿½ï¿½Ò»ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½Ü´ï¿½ï¿½ï¿½ ï¿½ï¿½Ô­Ê¼ï¿½ï¿½ï¿½İ½ï¿½ï¿½ï¿½AESï¿½ï¿½ï¿½Üºï¿½ï¿½Ú½ï¿½ï¿½ï¿½Base64ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
+// */
+//public class AESOperator {
+//	//ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½Key ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½26ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë´ï¿½Ê¹ï¿½ï¿½AES-128-CBCï¿½ï¿½ï¿½ï¿½Ä£Ê½
+//	//keyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÒªÎª16Î»ï¿½ï¿½
+//	private String sKey = "fhqji26gflzo8byo";
+//	private String ivParameter = "w3aqkgjjqxf8e7b2";
+//	private static AESOperator instance = null;
+//	
+//	private static char[] chars = new char[]{
+//			'a', 'b', 'c', 'f', 'e', 'f', 'g',
+//			'h', 'i', 'j', 'k', 'l', 'm', 'o',
+//			'p', 'q', 'r', 's', 't', 'u', 'v',
+//			'w', 'x', 'y', 'z', '0', '1', '2',
+//			'3', '4', '5', '6', '7', '8', '9',
+//	};
+//	private static Random random = new Random();
+//	
+//	private AESOperator() { }
+//	
+//	public static AESOperator getInstance() {
+//		if (instance == null)
+//			instance = new AESOperator();
+//		return instance;
+//	}
+//	
+//	/**
+//	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½key
+//	 * @return
+//	 */
+//	public static String initKey(){
+//		StringBuilder sb = new StringBuilder();
+//		for (int i = 0; i < 16; i++) {
+//			int rand = random.nextInt(34);
+//			sb.append(chars[rand]);
+//		}
+//		return sb.toString();
+//	}
+//	
+//	/**
+//	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ivParameter
+//	 * @return
+//	 */
+//	public static String initIvParameter(){
+//		StringBuilder sb = new StringBuilder();
+//		for (int i = 0; i < 16; i++) {
+//			int rand = random.nextInt(34);
+//			sb.append(chars[rand]);
+//		}
+//		return sb.toString();
+//	}
+//	
+//	// ï¿½ï¿½ï¿½ï¿½
+//	public String encrypt(String sSrc) {
+//		String result = "";
+//		try {
+//			Cipher cipher;
+//			cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+//			byte[] raw = sKey.getBytes();
+//			SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+//			IvParameterSpec iv = new IvParameterSpec(ivParameter.getBytes());// Ê¹ï¿½ï¿½CBCÄ£Ê½ï¿½ï¿½ï¿½ï¿½ÒªÒ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ivï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½ï¿½ã·¨ï¿½ï¿½Ç¿ï¿½ï¿½
+//			cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+//			byte[] encrypted = cipher.doFinal(sSrc.getBytes("utf-8"));
+//			result = new BASE64Encoder().encode(encrypted);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		// ï¿½Ë´ï¿½Ê¹ï¿½ï¿½BASE64ï¿½ï¿½×ªï¿½ë¡£
+//		return result;
+//	}
+//
+//	// ï¿½ï¿½ï¿½ï¿½
+//	public String decrypt(String sSrc) {
+//		try {
+//			byte[] raw = sKey.getBytes("ASCII");
+//			SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+//			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+//			IvParameterSpec iv = new IvParameterSpec(ivParameter.getBytes());
+//			cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+//			byte[] encrypted1 = new BASE64Decoder().decodeBuffer(sSrc);// ï¿½ï¿½ï¿½ï¿½base64ï¿½ï¿½ï¿½ï¿½
+//			byte[] original = cipher.doFinal(encrypted1);
+//			String originalString = new String(original, "utf-8");
+//			return originalString;
+//		} catch (Exception ex) {
+//			ex.printStackTrace();
+//			return null;
+//		}
+//	}
+//
+//	public static void main(String[] args) {
+//		// ï¿½ï¿½Òªï¿½ï¿½ï¿½Üµï¿½ï¿½Ö´ï¿½
+//		/*String cSrc = "root";
+//		System.out.println(cSrc + "  ï¿½ï¿½ï¿½ï¿½Îª" + cSrc.length());
+//		// ï¿½ï¿½ï¿½ï¿½
+//		long lStart = System.currentTimeMillis();
+//		String enString = AESOperator.getInstance().encrypt(cSrc);
+//		System.out.println("ï¿½ï¿½ï¿½Üºï¿½ï¿½ï¿½Ö´ï¿½ï¿½Ç£ï¿½" + enString + " ï¿½ï¿½ï¿½ï¿½Îª" + enString.length());
+//		
+//		long lUseTime = System.currentTimeMillis() - lStart;
+//		System.out.println("ï¿½ï¿½ï¿½Üºï¿½Ê±ï¿½ï¿½" + lUseTime + "ï¿½ï¿½ï¿½ï¿½");
+//		// ï¿½ï¿½ï¿½ï¿½
+//		lStart = System.currentTimeMillis();
+//		String DeString = AESOperator.getInstance().decrypt(enString);
+//		System.out.println("ï¿½ï¿½ï¿½Üºï¿½ï¿½ï¿½Ö´ï¿½ï¿½Ç£ï¿½" + DeString);
+//		lUseTime = System.currentTimeMillis() - lStart;
+//		System.out.println("ï¿½ï¿½ï¿½Üºï¿½Ê±ï¿½ï¿½" + lUseTime + "ï¿½ï¿½ï¿½ï¿½");*/
+//		
+//		byte[] bytes = new byte[]{0x45, 0x31, 0x30, 0x30, 0x41, 0x42, 0x30, 0x31, 0x30, 0x32, 0x2C, 0x31, 0x39, 0x32, 0x2E, 0x31, 0x36, 0x38, 0x2E, 0x31, 0x2E, 0x36, 0x36, 0x2C, 0x38, 0x30, 0x38, 0x30, 0x2C, 0x72, 0x6F, 0x6F, 0x74, 0x2C, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x2C, 0x45, 0x31, 0x30, 0x30, 0x41, 0x42, 0x30, 0x30, 0x30, 0x30, 0x2E, 0x70, 0x61, 0x72, 0x74, 0x31, 0x2C, 0x2F, 0x68, 0x6F, 0x6D, 0x65, 0x2F, 0x2C};
+//		String s = new String(bytes);
+//		System.out.println(s);
+//		//System.out.println(initKey());
+//		//System.out.println(initIvParameter());
+//	}
+//	
+//	
+//	
+//	
+//}

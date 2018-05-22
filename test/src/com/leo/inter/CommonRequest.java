@@ -16,7 +16,7 @@ public class CommonRequest {
 	private static final String USER_CARD = "430626198208312410";
 	private static final String USER_DEPT = "4406";
 	private static final String USER_NAME = "叶云";
-	private static final String REQ_URL = "http://localhost:8585/node";
+	private static final String REQ_URL = "http://localhost:10024/node";
 	
 	
 	public static String request(String code, String method, Map<String, Object> params) {

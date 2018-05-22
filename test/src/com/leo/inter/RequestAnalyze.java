@@ -200,15 +200,13 @@ public class RequestAnalyze {
 	@Test
 	public void S4406000529() {
 		String code = "S44-06000529";
-		
 		String method = "proxyService";
-		
 		Map<String,Object> params = new HashMap<String,Object>(); 
 		params.put("DataObjectCode", "FS201203");
 		params.put("start", 0);
 		params.put("limit", 200);
-		//params.put("params", new String[]{"457896457410", "2017-01-01", "2017-12-31"});
-		params.put("params", new String[]{"2017-01-01", "2017-12-31"});
+		//params.put("params", new String[]{"440605650512"});
+		params.put("params", new String[]{"440607500703", "", "", ""});
 		
 		CommonRequest.request(code, method, params);
 	}
