@@ -49,4 +49,11 @@ public class JsonTest {
 		System.out.println(startTime+" - "+endTime);
 	}
 	
+	@Test
+	public void testCurrentMills() {
+		// 1535942526
+		System.out.println(System.currentTimeMillis() / 1000);
+	}
+	
+	
 }
